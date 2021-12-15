@@ -3,7 +3,7 @@ FROM alpine:latest
 WORKDIR /app
 
 RUN apk update \
-  && apk add stunnel postfix \
+  && apk add stunnel \
   && chown -R stunnel:stunnel /etc/stunnel \
   && mkdir /run/stunnel \
   && chown -R stunnel:stunnel /run/stunnel \

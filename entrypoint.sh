@@ -42,14 +42,16 @@ if [ $POP3_DST_HOST ]; then
     echo "OCSPaia = yes" >> $STUNNEL_CONF
 fi
 
-echo "[email smtp]" >> $STUNNEL_CONF
-echo "client = yes" >> $STUNNEL_CONF
-echo "connect = ${SMTP_DST_HOST}:${SMTP_DST_PORT}" >> $STUNNEL_CONF
-echo "accept = ${HOSTNAME}:25" >> $STUNNEL_CONF
-echo "verifyChain = yes" >> $STUNNEL_CONF
-echo "CApath = /etc/ssl/certs" >> $STUNNEL_CONF
-echo "CAfile = /etc/ssl/certs/ca-certificates.crt" >> $STUNNEL_CONF
-echo "checkHost = ${SMTP_DST_HOST}" >> $STUNNEL_CONF
-echo "OCSPaia = yes" >> $STUNNEL_CONF
+if [$SMTP_DST_HOST]; then
+    echo "[email smtp]" >> $STUNNEL_CONF
+    echo "client = yes" >> $STUNNEL_CONF
+    echo "connect = ${SMTP_DST_HOST}:${SMTP_DST_PORT}" >> $STUNNEL_CONF
+    echo "accept = ${HOSTNAME}:25" >> $STUNNEL_CONF
+    echo "verifyChain = yes" >> $STUNNEL_CONF
+    echo "CApath = /etc/ssl/certs" >> $STUNNEL_CONF
+    echo "CAfile = /etc/ssl/certs/ca-certificates.crt" >> $STUNNEL_CONF
+    echo "checkHost = ${SMTP_DST_HOST}" >> $STUNNEL_CONF
+    echo "OCSPaia = yes" >> $STUNNEL_CONF
+fi
 
 $STUNNEL_BINARY

@@ -9,6 +9,10 @@ rm -f $STUNNEL_CONF
 echo "pid = /run/stunnel/stunnel.pid" >> $STUNNEL_CONF
 echo "foreground = yes" >> $STUNNEL_CONF
 
+IMAP_INTERNAL_PORT=${IMAP_INTERNAL_PORT:=9143}
+POP3_INTERNAL_PORT=${POP3_INTERNAL_PORT:=9110}
+SMTP_INTERNAL_PORT=${SMTP_INTERNAL_PORT:=9025}
+
 IMAP_DST_PORT=${IMAP_DST_PORT:=993}
 POP3_DST_PORT=${POP3_DST_PORT:=995}
 SMTP_DST_PORT=${SMTP_DST_PORT:=465}
@@ -22,7 +26,7 @@ if [ $IMAP_DST_HOST ]; then
     echo "[email imap]" >> $STUNNEL_CONF
     echo "client = yes" >> $STUNNEL_CONF
     echo "connect = ${IMAP_DST_HOST}:${IMAP_DST_PORT}" >> $STUNNEL_CONF
-    echo "accept = ${HOSTNAME}:143" >> $STUNNEL_CONF
+    echo "accept = ${HOSTNAME}:${IMAP_INTERNAL_PORT}" >> $STUNNEL_CONF
     echo "verifyChain = yes" >> $STUNNEL_CONF
     echo "CApath = /etc/ssl/certs" >> $STUNNEL_CONF
     echo "CAfile = /etc/ssl/certs/ca-certificates.crt" >> $STUNNEL_CONF
@@ -34,7 +38,7 @@ if [ $POP3_DST_HOST ]; then
     echo "[email pop3]" >> $STUNNEL_CONF
     echo "client = yes" >> $STUNNEL_CONF
     echo "connect = ${POP3_DST_HOST}:${POP3_DST_PORT}" >> $STUNNEL_CONF
-    echo "accept = ${HOSTNAME}:110" >> $STUNNEL_CONF
+    echo "accept = ${HOSTNAME}:${POP3_INTERNAL_PORT}" >> $STUNNEL_CONF
     echo "verifyChain = yes" >> $STUNNEL_CONF
     echo "CApath = /etc/ssl/certs" >> $STUNNEL_CONF
     echo "CAfile = /etc/ssl/certs/ca-certificates.crt" >> $STUNNEL_CONF
@@ -46,7 +50,7 @@ if [$SMTP_DST_HOST]; then
     echo "[email smtp]" >> $STUNNEL_CONF
     echo "client = yes" >> $STUNNEL_CONF
     echo "connect = ${SMTP_DST_HOST}:${SMTP_DST_PORT}" >> $STUNNEL_CONF
-    echo "accept = ${HOSTNAME}:25" >> $STUNNEL_CONF
+    echo "accept = ${HOSTNAME}:${SMTP_INTERNAL_PORT}" >> $STUNNEL_CONF
     echo "verifyChain = yes" >> $STUNNEL_CONF
     echo "CApath = /etc/ssl/certs" >> $STUNNEL_CONF
     echo "CAfile = /etc/ssl/certs/ca-certificates.crt" >> $STUNNEL_CONF
